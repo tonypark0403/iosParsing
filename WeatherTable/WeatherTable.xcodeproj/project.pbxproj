@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA0819E41E3AE0CB005F3F0A /* WeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0819E31E3AE0CB005F3F0A /* WeatherCell.swift */; };
 		EA843A8D1E399D10005752A9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA843A8C1E399D10005752A9 /* AppDelegate.swift */; };
 		EA843A8F1E399D10005752A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA843A8E1E399D10005752A9 /* ViewController.swift */; };
 		EA843A921E399D10005752A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA843A901E399D10005752A9 /* Main.storyboard */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA0819E31E3AE0CB005F3F0A /* WeatherCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherCell.swift; sourceTree = "<group>"; };
 		EA843A891E399D10005752A9 /* WeatherTable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherTable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA843A8C1E399D10005752A9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA843A8E1E399D10005752A9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 				EA843A9E1E399D1F005752A9 /* Resource */,
 				EA843A8C1E399D10005752A9 /* AppDelegate.swift */,
 				EA843A8E1E399D10005752A9 /* ViewController.swift */,
+				EA0819E31E3AE0CB005F3F0A /* WeatherCell.swift */,
 				EA843A901E399D10005752A9 /* Main.storyboard */,
 				EA843A931E399D10005752A9 /* Assets.xcassets */,
 				EA843A951E399D10005752A9 /* LaunchScreen.storyboard */,
@@ -167,6 +170,7 @@
 			files = (
 				EA843A8F1E399D10005752A9 /* ViewController.swift in Sources */,
 				EA843A8D1E399D10005752A9 /* AppDelegate.swift in Sources */,
+				EA0819E41E3AE0CB005F3F0A /* WeatherCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +332,7 @@
 				EA843A9D1E399D10005752A9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
