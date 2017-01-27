@@ -8,13 +8,16 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDataSource, XMLParserDelegate {
-    var datalist:[[String:String]] = [] // [[:]] will give one garbage data
+class ViewController: UIViewController, UITableViewDataSource {
+//    var datalist:[[String:String]] = [] // [[:]] will give one garbage data
     //for xml parsing
-    var detaildata:[String:String] = [:]
-    var elementTemp:String = ""
-    //for removing empty
-    var blank:Bool = false
+//    var detaildata:[String:String] = [:]
+//    var elementTemp:String = ""
+//    //for removing empty
+//    var blank:Bool = false
+    
+    //For JSON
+    var datalist = NSDictionary()//var datalist:[String:String] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,103 +47,129 @@ class ViewController: UIViewController, UITableViewDataSource, XMLParserDelegate
 //        datalist = [dict1,dict2,dict3,dict4,dict5,dict6,dict7,dict8,dict9,dict10,dict11,dict12,dict13,dict14,dict15,dict16,dict17,dict18,dict19]
         
         //XML Parser
-        let baseURL = "https://raw.githubusercontent.com/tonypark0403/iphonewithswift2/master/weather.xml"
-        let parser = XMLParser(contentsOf: URL(string: baseURL)!)
-        
-        parser!.delegate = self
-        parser!.parse()
-    }
-    
-    //3 methods are mandatory
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
-//        print("didStartElement : \(elementName)")
-        //for key
-        elementTemp = elementName
-        //for removing empty
-        blank = true
-    }
-    
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
-        //for removing empty
-        if blank == true && elementTemp != "local" && elementTemp != "weatherinfo" {
-//            print("foundCharacters : \(string)")
-            detaildata[elementTemp] = string
+//        let baseURL = "https://raw.githubusercontent.com/tonypark0403/iphonewithswift2/master/weather.xml"
+//        let parser = XMLParser(contentsOf: URL(string: baseURL)!)
+
+//        parser!.delegate = self
+//        parser!.parse()
+        //JSON Parser
+        let baseURL = URL(string:"https://raw.githubusercontent.com/tonypark0403/iphonewithswift2/master/weather.json")
+
+        //class func jsonObject(with data: Data, options opt: JSONSerialization.ReadingOptions = []) throws -> Any
+        //because of throws, we need do ~ catch
+
+        do {
+            self.datalist =  try JSONSerialization.jsonObject(with: Data(contentsOf: baseURL!), options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary// Data is NSData
+                //for FYI, we need NSDictionary(provided by cocoa:foundation), not Dictionary(provided by swift)
+                //Therefore, for JSON, we need NSDictionary
+        } catch {
+            print("Error loading Data")
         }
-        //when local -> dictionary starts
-//        if elementTemp != "local" {
+        
+        print(self.datalist)
+        
+        //For test of JSON
+//        let className = "\(type(of:(((datalist["weatherinfo"] as! NSDictionary)["local"]) as! NSArray).count))"
+        /*
+         as! is one of downcasting but including unrapping(for int?), whereas as? is just downcasting (calling child class)
+         AnyObject can represent an instance of any class type, whereas Any can represent an instance of any type at all, including function types.
+         */
+        let className = "\(((datalist["weatherinfo"] as! NSDictionary)["local"] as! NSArray).count)"
+        print("className : \(className)")
+
+    }
+    
+//    //3 methods are mandatory
+//    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+////        print("didStartElement : \(elementName)")
+//        //for key
+//        elementTemp = elementName
+//        //for removing empty
+//        blank = true
+//    }
+//    
+//    func parser(_ parser: XMLParser, foundCharacters string: String) {
+//        //for removing empty
+//        if blank == true && elementTemp != "local" && elementTemp != "weatherinfo" {
+////            print("foundCharacters : \(string)")
 //            detaildata[elementTemp] = string
 //        }
-    }
-    
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        if elementName == "local" {
-            datalist += [detaildata]
-            print(detaildata)
-        }
-        //for removing empty
-        blank = false
-        
-//        print("didEndElement : \(elementName)")
-    }
-    
-    //above 3 functions print things below
-    /*
-     <local>
-        <country>한국</country>
-        <weather>비</weather>
-        <temperature>20</temperature>
-     </local>
-     <local>
-        <country>일본</country>
-        <weather>맑음</weather>
-        <temperature>19</temperature>
-     </local>
-
-    didStartElement : local
-    foundCharacters :
-     
-    didStartElement : country
-    foundCharacters : 한국
-    didEndElement : country
-    foundCharacters :
-    
-    didStartElement : weather
-    foundCharacters : 비
-    didEndElement : weather
-    foundCharacters :
-    
-    didStartElement : temperature
-    foundCharacters : 20
-    didEndElement : temperature
-    foundCharacters :
-    
-    didEndElement : local
-    foundCharacters :
-    
-    didStartElement : local
-    foundCharacters :
-    
-    didStartElement : country
-    foundCharacters : 일본
-    didEndElement : country
-    foundCharacters :
-    
-    didStartElement : weather
-    foundCharacters : 맑음
-    didEndElement : weather
-    foundCharacters :
-    
-    didStartElement : temperature
-    foundCharacters : 19
-    didEndElement : temperature
-    foundCharacters : 
-    
-    didEndElement : local
-    foundCharacters :
-    */
+//        //when local -> dictionary starts
+////        if elementTemp != "local" {
+////            detaildata[elementTemp] = string
+////        }
+//    }
+//    
+//    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+//        if elementName == "local" {
+//            datalist += [detaildata]
+//            print(detaildata)
+//        }
+//        //for removing empty
+//        blank = false
+//        
+////        print("didEndElement : \(elementName)")
+//    }
+//    
+//    //above 3 functions print things below
+//    /*
+//     <local>
+//        <country>한국</country>
+//        <weather>비</weather>
+//        <temperature>20</temperature>
+//     </local>
+//     <local>
+//        <country>일본</country>
+//        <weather>맑음</weather>
+//        <temperature>19</temperature>
+//     </local>
+//
+//    didStartElement : local
+//    foundCharacters :
+//     
+//    didStartElement : country
+//    foundCharacters : 한국
+//    didEndElement : country
+//    foundCharacters :
+//    
+//    didStartElement : weather
+//    foundCharacters : 비
+//    didEndElement : weather
+//    foundCharacters :
+//    
+//    didStartElement : temperature
+//    foundCharacters : 20
+//    didEndElement : temperature
+//    foundCharacters :
+//    
+//    didEndElement : local
+//    foundCharacters :
+//    
+//    didStartElement : local
+//    foundCharacters :
+//    
+//    didStartElement : country
+//    foundCharacters : 일본
+//    didEndElement : country
+//    foundCharacters :
+//    
+//    didStartElement : weather
+//    foundCharacters : 맑음
+//    didEndElement : weather
+//    foundCharacters :
+//    
+//    didStartElement : temperature
+//    foundCharacters : 19
+//    didEndElement : temperature
+//    foundCharacters : 
+//    
+//    didEndElement : local
+//    foundCharacters :
+//    */
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return datalist.count
+//        return datalist.count
+        return ((datalist["weatherinfo"] as! NSDictionary)["local"] as! NSArray).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -154,21 +183,26 @@ class ViewController: UIViewController, UITableViewDataSource, XMLParserDelegate
         //this is for data
 //        print("indexPath row : \(indexPath.row)")
         
-        var dicTemp = datalist[indexPath.row] //if you have many sections, then using section as well as row
+//        var dicTemp = datalist[indexPath.row] //if you have many sections, then using section as well as row
+        let dicTemp = ((datalist["weatherinfo"] as! NSDictionary)["local"] as! NSArray)[indexPath.row] as! NSDictionary
         
         //for debugging
-        print(dicTemp) //debugging show first value is [:] because of initializing.
+//        print(dicTemp) //debugging show first value is [:] because of initializing.
+        print("dicTemp : \(dicTemp)")
         
 //        cell.textLabel!.text = dicTemp["지역"] //this is label made already.
-        cell.countryLabel.text = dicTemp["country"]
+//        cell.countryLabel.text = dicTemp["country"] //XML
+        cell.countryLabel.text = dicTemp["country"] as? String
 //        let weatherStr = dicTemp["날씨"]
-        let weatherStr = dicTemp["weather"]
+//        let weatherStr = dicTemp["weather"] //XML
+        let weatherStr = dicTemp["weather"] as? String
 
         //detail label
 //        cell.detailTextLabel!.text = weatheStr //if you want basic style, this is not needed
         cell.weatherLabel.text = weatherStr
         
-        cell.temperatureLabel.text = dicTemp["temperature"]
+//        cell.temperatureLabel.text = dicTemp["temperature"] //XML
+        cell.temperatureLabel.text = dicTemp["temperature"] as? String
         
         //for image
         if weatherStr == "맑음" {
